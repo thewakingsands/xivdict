@@ -10,6 +10,7 @@ export default defineConfig({
       formats: ['iife'],
     },
   },
+  publicDir: false,
   plugins: [
     svelte({
       compilerOptions: {
