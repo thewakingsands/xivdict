@@ -38,6 +38,7 @@ async function start() {
     floatWindow.words = []
     const selection = PowerfulSelection.fromUserSelection()
     if (!selection.hasSelectedContent()) {
+      lastText = ''
       return
     }
 
@@ -50,10 +51,17 @@ async function start() {
           if (currentText === lastText) {
             floatWindow.words = words
           }
-          floatWindow.words = words
 
-          // 触发重排
-          const rect = floatWindow.getBoundingClientRect()
+          let rect = floatWindow.getBoundingClientRect()
+          if (rect.bottom > window.innerHeight || rect.right > window.innerWidth) {
+            const pos = selection.getTopLeftCorner()
+            floatWindow.style.bottom = 'unset'
+            floatWindow.style.right = 'unset'
+            floatWindow.style.top = `${Math.max(pos.x, 0) + 24}px`
+            floatWindow.style.left = `${Math.max(pos.y, 0) + 24}px`
+          }
+
+          rect = floatWindow.getBoundingClientRect()
           if (rect.bottom > window.innerHeight) {
             floatWindow.style.bottom = '0'
             floatWindow.style.top = 'unset'
@@ -69,8 +77,8 @@ async function start() {
     const pos = selection.getBottomRightCorner()
     floatWindow.style.bottom = 'unset'
     floatWindow.style.right = 'unset'
-    floatWindow.style.top = `${pos.x + 24}px`
-    floatWindow.style.left = `${pos.y + 0}px`
+    floatWindow.style.top = `${Math.max(pos.x, 0) + 24}px`
+    floatWindow.style.left = `${Math.max(pos.y, 0) + 24}px`
   })
 }
 

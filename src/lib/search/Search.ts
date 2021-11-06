@@ -47,14 +47,6 @@ export class Search {
       .sort((a, b) => a[0] - b[0])
       .map(([, value]) => value)
       .filter((word) => {
-        if (set.has(word)) {
-          return false
-        } else {
-          set.add(word)
-          return true
-        }
-      })
-      .filter((word) => {
         if (word.match(/^([a-z]+|[0-9]+)$/)) {
           return haystack.match(new RegExp(`\\b${word}\\b`, 'im'))
         } else {
@@ -64,5 +56,13 @@ export class Search {
       .map((key) => ({
         ...this.dict.get(key),
       }))
+      .filter(({ word }) => {
+        if (set.has(word)) {
+          return false
+        } else {
+          set.add(word)
+          return true
+        }
+      })
   }
 }

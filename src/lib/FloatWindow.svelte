@@ -1,7 +1,7 @@
 <svelte:options tag={null} />
 
 <script lang="ts">
-  import type { SearchMatch, SearchMatches } from './search/search.types'
+  import type { SearchMatches } from './search/search.types'
 
   export let words: SearchMatches = []
   export let disableSpoilerWarning: boolean = false
@@ -17,7 +17,7 @@
 <div class="Window" class:hidden={words.length < 1}>
   <div class="Window_Main">
     <ul class="Window_WordList">
-      {#each words as word (word.word)}
+      {#each words as word}
         <li class="Window_WordItem">
           <span class="Window_WordKey">{word.word}</span>
           <span class="Window_WordDefinition">
@@ -55,6 +55,7 @@
 <style lang="scss">
   :host {
     @apply fixed;
+    z-index: 2147483647;
     user-select: none;
   }
   button,
@@ -74,10 +75,12 @@
   }
   .Window {
     all: unset;
+    user-select: inherit;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
       'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
       'Noto Color Emoji';
     font-size: 14px;
+    word-break: break-word;
 
     @apply block box-border;
     @apply text-gray-800 text-sm;
