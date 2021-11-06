@@ -21,8 +21,15 @@ export class Searcher {
       }
       // this.worker = new (await import('./worker?worker')).default()
       this.worker = new SearchWorker()
-      this.worker.addEventListener('message', (e) => {
-        this.onMessage(e.data as any)
+
+      await new Promise<void>((resolve, reject) => {
+        this.worker.addEventListener('message', (e) => {
+          this.onMessage(e.data as any)
+          resolve()
+        })
+        this.worker.addEventListener('error', (e) => {
+          reject(e.error)
+        })
       })
     } catch {
       // this.search = new (await import('./Search')).Search()
