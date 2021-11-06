@@ -5,7 +5,9 @@ import type { SearchMatches } from './lib/search/search.types'
 
 async function start() {
   const searcher = new Searcher()
-  await searcher.init(new URL('./assets/glossary.txt?url', import.meta.url).toString())
+  await searcher.init(
+    'https://cdn.jsdelivr.net/gh/thewakingsands/xivdict-glossary@master/glossary.txt'
+  )
 
   customElements.define('xd-float-window', FloatWindow as any)
 
