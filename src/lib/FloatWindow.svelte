@@ -73,6 +73,11 @@
     display: none !important;
   }
   .Window {
+    all: reset;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+      'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+      'Noto Color Emoji';
+
     @apply block box-border;
     @apply text-gray-800 text-sm;
     @apply border-8 border-solid border-gray-200 border-opacity-25 rounded-lg;

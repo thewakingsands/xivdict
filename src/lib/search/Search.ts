@@ -15,7 +15,7 @@ export class Search {
       const keys = extractedKey.split('、')
       const definition = value.join('：').trim()
       for (const key of keys) {
-        const indexedKey = key.trim()
+        const indexedKey = key.toLowerCase().trim()
         if (indexedKey.length > 0) {
           if (!definition) {
             console.warn('格式不正确：', indexedKey)
@@ -40,10 +40,26 @@ export class Search {
   }
 
   public matches(haystack: string): SearchMatches {
-    const matches = this.search(haystack)
+    const matches = this.search(haystack.toLowerCase())
+    const set = new Set<string>()
     return matches
       .sort((a, b) => a[0] - b[0])
       .map(([, value]) => value)
+      .filter((word) => {
+        if (set.has(word)) {
+          return false
+        } else {
+          set.add(word)
+          return true
+        }
+      })
+      .filter((word) => {
+        if (word.match(/^([a-z]+|[0-9]+)$/)) {
+          return haystack.match(new RegExp(`\\b${word}\\b`, 'im'))
+        } else {
+          return true
+        }
+      })
       .map((key) => ({
         word: key,
         ...this.dict.get(key),
