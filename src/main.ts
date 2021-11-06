@@ -3,11 +3,24 @@ import { PowerfulSelection } from './lib/PowerfulSelection'
 import { Searcher } from './lib/search'
 import type { SearchMatches } from './lib/search/search.types'
 
-async function start() {
-  const searcher = new Searcher()
-  await searcher.init(
+function getDictUrl() {
+  return (
+    getMetaContent('xivdict-dict-url') ||
     'https://cdn.jsdelivr.net/gh/thewakingsands/xivdict-glossary@master/glossary.txt'
   )
+}
+
+function getMetaContent(key: string): string {
+  const meta = document.querySelector(`meta[name="${key}"]`)
+  if (meta) {
+    return meta.getAttribute('content')
+  }
+  return ''
+}
+
+async function start() {
+  const searcher = new Searcher()
+  await searcher.init(getDictUrl())
 
   customElements.define('xd-float-window', FloatWindow as any)
 

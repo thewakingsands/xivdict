@@ -29,6 +29,19 @@ export class Search {
         }
       }
     }
+
+    for (const value of this.dict.values()) {
+      if (value.definition.startsWith('@')) {
+        const pointTo = value.definition.substring(1)
+        const target = this.dict.get(pointTo.toLowerCase())
+        if (target) {
+          value.definition = target.definition
+        } else {
+          console.warn('没有找到目标：', pointTo)
+        }
+      }
+    }
+
     this.scanner = new FastScanner([...this.dict.keys()])
   }
 
