@@ -28,6 +28,18 @@ async function start() {
     isFocus = false
   })
 
+  floatWindow.addEventListener('mouseenter', (e) => {
+    if (e.buttons > 0) {
+      floatWindow.style.userSelect = 'none'
+    } else {
+      floatWindow.style.userSelect = 'text'
+    }
+  })
+
+  floatWindow.addEventListener('mouseleave', (e) => {
+    floatWindow.style.userSelect = 'text'
+  })
+
   document.body.appendChild(floatWindow)
 
   document.addEventListener('selectionchange', () => {
