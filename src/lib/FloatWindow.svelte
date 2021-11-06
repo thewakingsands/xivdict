@@ -29,7 +29,7 @@
               </span>
             {:else}
               <span class="Window_WordDefinitionContent">
-                {word.definition}
+                {@html word.definition}
               </span>
             {/if}
           </span>
