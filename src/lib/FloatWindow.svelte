@@ -54,6 +54,7 @@
 
 <style lang="scss">
   :host {
+    all: initial;
     @apply fixed;
     z-index: 2147483647;
     user-select: none;
@@ -74,7 +75,6 @@
     display: none !important;
   }
   .Window {
-    all: unset;
     user-select: inherit;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
       'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
