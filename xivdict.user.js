@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        FFXIV 划词
-// @require     https://cdn.jsdelivr.net/npm/@thewakingsands/xivdict@0.0.5/dist/xivdict.iife.js
+// @require     https://cdn.jsdelivr.net/npm/@thewakingsands/xivdict@latest/dist/xivdict.iife.js
 // @namespace   org.ffcafe.xivdict
 // @match       *://*/*
 // @grant       none
