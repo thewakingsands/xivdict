@@ -83,17 +83,13 @@
     word-break: break-word;
 
     @apply block box-border;
-    @apply text-gray-800 text-sm;
+    @apply text-gray-800;
     @apply border-8 border-solid border-gray-200 border-opacity-25 rounded-lg;
     @apply shadow-lg;
 
     @apply bg-gray-100;
 
     width: 340px;
-    max-width: 95%;
-    z-index: 998;
-    top: 0px;
-    left: 0px;
 
     &_Main {
       @apply flex flex-col;
