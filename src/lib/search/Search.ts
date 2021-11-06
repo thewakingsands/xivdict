@@ -1,8 +1,8 @@
 import FastScanner from 'fastscan'
-import type { SearchMatches } from './search.types'
+import type { SearchMatch, SearchMatches } from './search.types'
 
 export class Search {
-  private dict: Map<string, { definition: string; spoiler: boolean }> = new Map()
+  private dict: Map<string, SearchMatch> = new Map()
   private scanner: FastScanner
 
   public async loadDict(url: string) {
@@ -22,6 +22,7 @@ export class Search {
           }
           const spoiler = definition.includes('剧透')
           this.dict.set(indexedKey, {
+            word: extractedKey,
             definition,
             spoiler,
           })
@@ -61,7 +62,6 @@ export class Search {
         }
       })
       .map((key) => ({
-        word: key,
         ...this.dict.get(key),
       }))
   }
