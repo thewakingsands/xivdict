@@ -77,28 +77,25 @@ export class Search {
 
   public matches(haystack: string): SearchMatches {
     const matches = this.search(haystack.toLowerCase())
-    const set = new Set<string>()
     return matches
-      .sort((a, b) => a[0] - b[0])
-      .map(([, value]) => value)
-      .filter((word) => {
+      .sort((a, b) => {
+        if (a[0] === b[0]) {
+          return b[1].length - a[1].length
+        } else {
+          return a[0] - b[0]
+        }
+      })
+      .filter(([, word]) => {
         if (word.match(/^([a-z]+|[0-9]+)$/)) {
           return haystack.match(new RegExp(`\\b${word}\\b`, 'im'))
         } else {
           return true
         }
       })
-      .map((key) => ({
+      .map(([index, key]) => ({
+        index,
         ...this.dict.get(key),
       }))
-      .filter(({ word }) => {
-        if (set.has(word)) {
-          return false
-        } else {
-          set.add(word)
-          return true
-        }
-      })
   }
 }
 

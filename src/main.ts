@@ -34,6 +34,7 @@ async function start() {
   const floatWindowApp = new FloatWindow({
     target: floatWindow,
     props: {
+      useRowStyle: true,
       words: [],
     },
   })
@@ -55,75 +56,78 @@ async function start() {
 
   document.body.appendChild(floatWindow)
 
-  followSelectionTip()
+  floatWindow.style.userSelect = 'none'
 
-  function followSelectionTip() {
-    floatWindow.style.userSelect = 'none'
+  floatWindow.addEventListener('focus', () => {
+    isFocus = true
+    floatWindow.style.userSelect = 'text'
+  })
 
-    floatWindow.addEventListener('focus', () => {
-      isFocus = true
-      floatWindow.style.userSelect = 'text'
-    })
+  floatWindow.addEventListener('blur', () => {
+    isFocus = false
+  })
 
-    floatWindow.addEventListener('blur', () => {
-      isFocus = false
-    })
-
-    floatWindow.addEventListener('mouseenter', (e) => {
-      if (e.buttons > 0) {
-        floatWindow.style.userSelect = 'none'
-      } else {
-        floatWindow.style.userSelect = 'text'
-      }
-    })
-
-    floatWindow.addEventListener('mouseleave', (e) => {
-      floatWindow.style.userSelect = 'text'
-    })
-
-    let lastTrigger: number = 0
-    let selectionTimer: any
-    document.addEventListener('selectionchange', () => {
-      if (isFocus) {
-        return
-      }
-      const selection = PowerfulSelection.fromUserSelection()
-      clearTimeout(selectionTimer)
-      selectionTimer = setTimeout(() => {
-        lastTrigger = Date.now()
-        handleSelectionChange(selection)
-      }, 100)
-
-      if (Date.now() - lastTrigger > 1000) {
-        handleSelectionChange(selection)
-        lastTrigger = Date.now()
-        clearTimeout(selectionTimer)
-      }
-    })
-
-    function handleSelectionChange(selection: PowerfulSelection) {
+  floatWindow.addEventListener('mouseenter', (e) => {
+    if (e.buttons > 0) {
       floatWindow.style.userSelect = 'none'
-      floatWindowApp.$set({ words: [] })
-      if (!selection.hasSelectedContent()) {
-        lastText = ''
-        return
-      }
+    } else {
+      floatWindow.style.userSelect = 'text'
+    }
+  })
 
-      const currentText = selection.toString()
-      if (currentText !== lastText) {
-        lastText = selection.toString()
-        searcher
-          .matches(currentText)
-          .then((words) => {
-            if (currentText === lastText) {
-              // floatWindowApp.$set({ words })
-              floatWindowApp.words = words
+  floatWindow.addEventListener('mouseleave', (e) => {
+    floatWindow.style.userSelect = 'text'
+  })
+
+  let lastTrigger: number = 0
+  let selectionTimer: any
+  document.addEventListener('selectionchange', () => {
+    if (isFocus) {
+      return
+    }
+    const selection = PowerfulSelection.fromUserSelection()
+    clearTimeout(selectionTimer)
+    selectionTimer = setTimeout(() => {
+      lastTrigger = Date.now()
+      handleSelectionChange(selection)
+    }, 100)
+
+    if (Date.now() - lastTrigger > 1000) {
+      handleSelectionChange(selection)
+      lastTrigger = Date.now()
+      clearTimeout(selectionTimer)
+    }
+  })
+
+  function handleSelectionChange(selection: PowerfulSelection) {
+    floatWindow.style.userSelect = 'none'
+    floatWindowApp.$set({ words: [] })
+    if (!selection.hasSelectedContent()) {
+      lastText = ''
+      return
+    }
+
+    const currentText = selection.toString()
+    if (currentText !== lastText) {
+      lastText = selection.toString()
+      searcher
+        .matches(currentText)
+        .then((words) => {
+          const set = new Set<string>()
+          words = words.filter((word) => {
+            if (set.has(word.word)) {
+              return false
             }
-
-            moveFloatWindow(...selection.getFloatWindowReference())
+            set.add(word.word)
+            return true
           })
-          .catch(console.error)
-      }
+          if (currentText === lastText) {
+            floatWindowApp.words = words
+          }
+
+          moveFloatWindow(...selection.getFloatWindowReference())
+        })
+        .catch(console.error)
     }
   }
 
