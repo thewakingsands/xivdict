@@ -117,41 +117,23 @@ async function start() {
           }
 
           moveFloatWindow(...selection.getFloatWindowReference())
-          let rect = floatWindow.getBoundingClientRect()
-          if (rect.bottom > window.innerHeight || rect.right > window.innerWidth) {
-            const pos = selection.getTopLeftCorner()
-            floatWindow.style.bottom = 'unset'
-            floatWindow.style.right = 'unset'
-            floatWindow.style.top = `${Math.max(pos.x, 0) + 24}px`
-            floatWindow.style.left = `${Math.max(pos.y, 0) + 24}px`
-          }
-
-          rect = floatWindow.getBoundingClientRect()
-          if (rect.bottom > window.innerHeight) {
-            floatWindow.style.bottom = '0'
-            floatWindow.style.top = 'unset'
-          }
-          if (rect.right > window.innerWidth) {
-            floatWindow.style.right = '0'
-            floatWindow.style.left = 'unset'
-          }
         })
         .catch(console.error)
     }
   }
 
-  function moveFloatWindow(x1: number, y1: number, x2: number, y2: number) {
+  function moveFloatWindow(x: number, y: number) {
     floatWindow.style.bottom = 'unset'
     floatWindow.style.right = 'unset'
-    floatWindow.style.top = `${Math.max(x1, 0) + 24}px`
-    floatWindow.style.left = `${Math.max(y1, 0) + 24}px`
+    floatWindow.style.top = `${Math.max(x, 0) + 24}px`
+    floatWindow.style.left = `${Math.max(y, 0) + 24}px`
 
     let rect = floatWindow.getBoundingClientRect()
     if (rect.bottom > window.innerHeight || rect.right > window.innerWidth) {
       floatWindow.style.bottom = 'unset'
       floatWindow.style.right = 'unset'
-      floatWindow.style.top = `${Math.max(x2, 0) + 24}px`
-      floatWindow.style.left = `${Math.max(y2, 0) + 24}px`
+      floatWindow.style.top = `${Math.max(x, 0) + 24}px`
+      floatWindow.style.left = `${Math.max(y, 0) + 24}px`
     }
 
     rect = floatWindow.getBoundingClientRect()

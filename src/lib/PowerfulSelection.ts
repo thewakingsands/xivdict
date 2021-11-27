@@ -44,16 +44,13 @@ export class PowerfulSelection {
     return { x: rect.top, y: rect.left }
   }
 
-  public getFloatWindowReference(): [number, number, number, number] {
+  public getFloatWindowReference(): [number, number] {
     const r = this.firstRange()
-    const start = new Range()
-    start.setStart(r.startContainer, r.startOffset)
-    const rect1 = start.getBoundingClientRect()
     const end = new Range()
     end.setStart(r.endContainer, r.endOffset)
     const rect2 = end.getBoundingClientRect()
 
-    return [rect1.bottom, rect1.right, rect2.top, rect2.left]
+    return [rect2.bottom, rect2.right]
   }
 
   public toString(): string {
