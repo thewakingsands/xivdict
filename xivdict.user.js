@@ -5,9 +5,9 @@
 // @namespace   org.ffcafe.xivdict
 // @match       *://*/*
 // @grant       GM_getResourceText
-// @version     1.1
+// @version     0.1.2
 // @author      -
-// @description 11/6/2021, 11:09:45 PM
+// @description FFXIV 划词
 // @inject-into page
 // ==/UserScript==
 
