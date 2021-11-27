@@ -52,12 +52,16 @@
   </div>
 </div>
 
-<style lang="scss">
+<style module lang="scss">
   :host {
     all: initial;
     @apply fixed;
     z-index: 2147483647;
     user-select: none;
+    font-size: 14px;
+  }
+  :root {
+    font-size: 14px;
   }
   button,
   a {
@@ -151,6 +155,10 @@
     }
     &_About {
       @apply flex-1;
+    }
+    :global(.WordRef) {
+      display: inline-block;
+      padding-right: 1em;
     }
   }
 </style>

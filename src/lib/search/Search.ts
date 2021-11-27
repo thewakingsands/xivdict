@@ -10,36 +10,53 @@ export class Search {
     const text = await resp.text()
     const lines = text.split('\n')
     this.dict = new Map()
-    for (const line of lines) {
+
+    const preDict = new Map<string, SearchMatch[]>()
+    for (const [lineno, line] of lines.entries()) {
+      if (line.startsWith('//')) {
+        continue
+      }
       const [extractedKey, ...value] = line.split('：')
       const keys = extractedKey.split('、')
       const definition = value.join('：').trim()
       for (const key of keys) {
         const indexedKey = key.toLowerCase().trim()
-        if (indexedKey.length > 0) {
-          if (!definition) {
-            console.warn('格式不正确：', indexedKey)
-          }
-          const spoiler = definition.includes('剧透')
-          this.dict.set(indexedKey, {
-            word: extractedKey,
-            definition,
-            spoiler,
-          })
+        if (indexedKey.length < 1) {
+          continue
         }
+
+        if (!definition) {
+          console.warn(
+            `[FF14划词] 第 ${lineno + 1} 行[${line}]格式不正确；词条[${indexedKey}]缺失定义`
+          )
+        }
+        const spoiler = definition.includes('剧透')
+
+        const defs = preDict.get(indexedKey) || []
+        defs.push({
+          word: extractedKey,
+          definition,
+          spoiler,
+        })
+        preDict.set(indexedKey, defs)
       }
     }
 
-    for (const value of this.dict.values()) {
-      if (value.definition.startsWith('@')) {
-        const pointTo = value.definition.substring(1)
-        const target = this.dict.get(pointTo.toLowerCase())
-        if (target) {
-          value.definition = target.definition
-        } else {
-          console.warn('没有找到目标：', pointTo)
+    for (const [indexedKey, defList] of preDict.entries()) {
+      for (const value of defList) {
+        if (value.definition.startsWith('@')) {
+          const pointTo = value.definition.substring(1)
+          const target = preDict.get(pointTo.toLowerCase())
+          if (target) {
+            const joinedMatches = joinMatches(target)
+            value.definition = `<span class="WordRef">${pointTo}</span>${joinedMatches.definition}`
+            value.spoiler = joinedMatches.spoiler
+          } else {
+            console.warn(`[FF14划词] 词条[${value.word}]的指向不正确；没有词条[${pointTo}]`)
+          }
         }
       }
+      this.dict.set(indexedKey, joinMatches(defList))
     }
 
     this.scanner = new FastScanner([...this.dict.keys()])
@@ -77,5 +94,16 @@ export class Search {
           return true
         }
       })
+  }
+}
+
+function joinMatches(matches: SearchMatch[]): SearchMatch {
+  const defs = matches.map(({ definition }) => definition)
+  const spoiler = matches.some(({ spoiler }) => spoiler)
+  return {
+    word: matches[0].word,
+    definition:
+      defs.length > 1 ? '<ol>' + defs.map((v) => `<li>${v}</li>`).join('') + '</ol>' : defs[0],
+    spoiler,
   }
 }
