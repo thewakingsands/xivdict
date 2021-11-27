@@ -84,10 +84,6 @@
       user-select: none;
       background: transparent;
     }
-    :global(.WordRef) {
-      display: inline-block;
-      padding-right: 1em;
-    }
 
     &_Main {
       @apply flex flex-col;
@@ -118,6 +114,20 @@
     }
     &_WordDefinition {
       flex: 3;
+      :global(.WordRef) {
+        @apply inline-block pr-1;
+        &::after {
+          content: '.';
+        }
+      }
+      :global(ol) {
+        @apply pl-0 list-none;
+        counter-reset: listconter;
+      }
+      :global(ol li::before) {
+        counter-increment: listconter;
+        content: counter(listconter) '. ';
+      }
     }
     &_SpoilerWarning {
       @apply text-yellow-800;
