@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        FFXIV 划词
-// @require     https://cdn.jsdelivr.net/npm/@thewakingsands/xivdict@latest/dist/xivdict.iife.js
-// @resource    css https://cdn.jsdelivr.net/npm/@thewakingsands/xivdict@latest/dist/style.css
+// @require     https://cdn.jsdelivr.net/npm/@thewakingsands/xivdict@0.1.2/dist/xivdict.iife.js
+// @resource    css https://cdn.jsdelivr.net/npm/@thewakingsands/xivdict@0.1.2/dist/style.css
 // @namespace   org.ffcafe.xivdict
 // @match       *://*/*
 // @grant       GM_getResourceText
