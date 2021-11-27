@@ -77,6 +77,7 @@ async function start() {
 
   document.body.appendChild(floatWindow)
 
+  let lastTrigger: number = 0
   let selectionTimer: any
   document.addEventListener('selectionchange', () => {
     if (isFocus) {
@@ -85,8 +86,15 @@ async function start() {
     const selection = PowerfulSelection.fromUserSelection()
     clearTimeout(selectionTimer)
     selectionTimer = setTimeout(() => {
+      lastTrigger = Date.now()
       handleSelectionChange(selection)
     }, 100)
+
+    if (Date.now() - lastTrigger > 1000) {
+      handleSelectionChange(selection)
+      lastTrigger = Date.now()
+      clearTimeout(selectionTimer)
+    }
   })
 
   function handleSelectionChange(selection: PowerfulSelection) {
