@@ -5,6 +5,7 @@
 
   export let words: SearchMatches = []
   export let disableSpoilerWarning: boolean = false
+  export let useRowStyle: boolean = false
 
   let showSpoilerWords: Set<string> = new Set()
 
@@ -14,7 +15,7 @@
   }
 </script>
 
-<div class="Window Window-RowStyle" class:hidden={words.length < 1}>
+<div class="Window" class:hidden={words.length < 1} class:Window-RowStyle={useRowStyle}>
   <div class="Window_Main">
     <ul class="Window_WordList">
       {#each words as word}
