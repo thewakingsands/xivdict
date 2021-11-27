@@ -64,6 +64,11 @@
     require-relative "^0.8.7"
     svelte-hmr "^0.14.7"
 
+"@thewakingsands/axis-font-icons@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@thewakingsands/axis-font-icons/-/axis-font-icons-0.3.0.tgz#4beb08edc24edca8ad03508a6c040e51268ec614"
+  integrity sha512-+KaW886tezl/S16vvaXMYiMkdx+OIXtQ7SoC/6rOc4h+moXjENmhlddAhKHgID1wigOiRi1jQ7Y6mVrr0hgo7Q==
+
 "@tillschander/postcss-rem-to-px@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@tillschander/postcss-rem-to-px/-/postcss-rem-to-px-1.0.1.tgz#17a85b73f6d28b865ca0e4dc0c84f5516e51d2e6"

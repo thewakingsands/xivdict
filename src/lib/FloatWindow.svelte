@@ -2,6 +2,7 @@
 
 <script lang="ts">
   import type { SearchMatches } from './search/search.types'
+  import '@thewakingsands/axis-font-icons'
 
   export let words: SearchMatches = []
   export let disableSpoilerWarning: boolean = false
@@ -56,6 +57,12 @@
 <style module lang="scss">
   .hidden {
     display: none !important;
+  }
+  @font-face {
+    font-family: 'FFXIV';
+    src: url('../assets/fonts/FFXIV_Lodestone_SSF.ttf') format('truetype'),
+      url('../assets/fonts/FFXIV_Lodestone_SSF.woff') format('woff');
+    unicode-range: U+E020-E0DB;
   }
   .Window {
     all: initial;

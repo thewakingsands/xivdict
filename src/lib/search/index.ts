@@ -19,6 +19,9 @@ export class Searcher {
       if (!window.Worker) {
         throw new Error('No worker support')
       }
+      if (!(window as any).__enableXivDictWorker) {
+        throw new Error('Worker is not enabled')
+      }
       // this.worker = new (await import('./worker?worker')).default()
       this.worker = new SearchWorker()
 

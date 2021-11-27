@@ -30,6 +30,7 @@
     "vite": "^2.6.4"
   },
   "dependencies": {
+    "@thewakingsands/axis-font-icons": "^0.3.0",
     "fastscan": "^1.0.6",
     "p-defer": "^4.0.0",
     "sass": "^1.43.4"
