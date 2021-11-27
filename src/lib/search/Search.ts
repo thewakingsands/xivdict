@@ -57,6 +57,11 @@ export class Search {
         }
       }
       this.dict.set(indexedKey, joinMatches(defList))
+
+      const spaceJoined = indexedKey.replace(/(?<!^)\b(?!$)/g, ' ')
+      if (spaceJoined !== indexedKey) {
+        this.dict.set(spaceJoined, joinMatches(defList))
+      }
     }
 
     this.scanner = new FastScanner([...this.dict.keys()])
