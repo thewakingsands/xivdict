@@ -24,6 +24,7 @@ async function start() {
 
   let isFocus = false
   let lastText = ''
+  let lastSelection: PowerfulSelection = null
 
   const floatWindow = document.createElement('div')
   floatWindow.tabIndex = 0
@@ -37,6 +38,10 @@ async function start() {
       useRowStyle: true,
       words: [],
     },
+  })
+
+  floatWindowApp.$on('showWindow', () => {
+    moveFloatWindow(...lastSelection.getFloatWindowReference())
   })
 
   floatWindow.addEventListener('click', (e) => {
@@ -90,7 +95,7 @@ async function start() {
     selectionTimer = setTimeout(() => {
       lastTrigger = Date.now()
       handleSelectionChange(selection)
-    }, 100)
+    }, 30)
 
     if (Date.now() - lastTrigger > 1000) {
       handleSelectionChange(selection)
@@ -101,7 +106,7 @@ async function start() {
 
   function handleSelectionChange(selection: PowerfulSelection) {
     floatWindow.style.userSelect = 'none'
-    floatWindowApp.$set({ words: [] })
+    floatWindowApp.$set({ words: [], expandWindow: false })
     if (!selection.hasSelectedContent()) {
       lastText = ''
       return
@@ -122,9 +127,11 @@ async function start() {
             return true
           })
           if (currentText === lastText) {
+            floatWindowApp.expandWindow = false
             floatWindowApp.words = words
           }
 
+          lastSelection = selection
           moveFloatWindow(...selection.getFloatWindowReference())
         })
         .catch(console.error)
@@ -132,17 +139,19 @@ async function start() {
   }
 
   function moveFloatWindow(x: number, y: number) {
+    const offset = 8
+
     floatWindow.style.bottom = 'unset'
     floatWindow.style.right = 'unset'
-    floatWindow.style.top = `${Math.max(x, 0) + 24}px`
-    floatWindow.style.left = `${Math.max(y, 0) + 24}px`
+    floatWindow.style.top = `${Math.max(x, 0) + offset}px`
+    floatWindow.style.left = `${Math.max(y, 0) + offset}px`
 
     let rect = floatWindow.getBoundingClientRect()
     if (rect.bottom > window.innerHeight || rect.right > window.innerWidth) {
       floatWindow.style.bottom = 'unset'
       floatWindow.style.right = 'unset'
-      floatWindow.style.top = `${Math.max(x, 0) + 24}px`
-      floatWindow.style.left = `${Math.max(y, 0) + 24}px`
+      floatWindow.style.top = `${Math.max(x, 0) + offset}px`
+      floatWindow.style.left = `${Math.max(y, 0) + offset}px`
     }
 
     rect = floatWindow.getBoundingClientRect()

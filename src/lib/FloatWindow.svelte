@@ -3,21 +3,31 @@
 <script lang="ts">
   import type { SearchMatches } from './search/search.types'
   import '@thewakingsands/axis-font-icons'
+  import { createEventDispatcher, tick } from 'svelte'
 
   export let words: SearchMatches = []
   export let disableSpoilerWarning: boolean = false
   export let useRowStyle: boolean = false
 
   let showSpoilerWords: Set<string> = new Set()
+  export let expandWindow: boolean = false
 
   function showSpoiler(word: string) {
     showSpoilerWords.add(word)
     showSpoilerWords = showSpoilerWords
   }
+
+  const dispatch = createEventDispatcher()
+  async function showWindow() {
+    expandWindow = true
+    await tick()
+    dispatch('showWindow')
+  }
 </script>
 
 <div class="Window" class:hidden={words.length < 1} class:Window-RowStyle={useRowStyle}>
-  <div class="Window_Main">
+  <div class="Window_ShowButton" class:hidden={expandWindow} on:click={showWindow}>黑话翻译</div>
+  <div class="Window_Main" class:hidden={!expandWindow}>
     <ul class="Window_WordList">
       {#each words as word}
         <li class="Window_WordItem">
@@ -42,6 +52,7 @@
       <div class="Window_Functions">
         <button class="hidden">赞</button>
         <a href="https://i.duotai.net/forms/k06nm/bhytfsr6" rel="noopener" target="_blank">反馈</a>
+        <a href="https://github.com/thewakingsands/xivdict" rel="noopener" target="_blank">项目</a>
         <button class="hidden">不再显示</button>
       </div>
       <div class="Window_About">
@@ -73,18 +84,6 @@
     font-size: 14px;
     word-break: break-word;
 
-    @apply block box-border;
-    @apply text-gray-800;
-    @apply border-8 border-solid border-gray-200 border-opacity-25 rounded-lg;
-    @apply shadow-lg;
-
-    @apply bg-gray-100;
-
-    width: 340px;
-    max-height: 800px;
-    max-height: 90vh;
-    overflow-y: auto;
-
     :global(button),
     :global(a) {
       @apply no-underline text-blue-500;
@@ -98,8 +97,30 @@
       background: transparent;
     }
 
+    &_ShowButton {
+      @apply relative bg-gray-200 rounded-lg text-blue-600 cursor-pointer select-none;
+      background-image: url('../assets/061523_hr1.png');
+      background-size: 24px;
+      background-repeat: no-repeat;
+      width: 60px;
+      height: 24px;
+      padding-left: 24px;
+      line-height: 24px;
+    }
+
     &_Main {
       @apply flex flex-col;
+      @apply box-border;
+      @apply text-gray-800;
+      @apply border-8 border-solid border-gray-200 border-opacity-25 rounded-lg;
+      @apply shadow-lg;
+
+      @apply bg-gray-100;
+
+      width: 340px;
+      max-height: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     &_WordList {
