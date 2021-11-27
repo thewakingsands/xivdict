@@ -11,12 +11,5 @@ export default defineConfig({
     },
   },
   publicDir: false,
-  plugins: [
-    svelte({
-      compilerOptions: {
-        customElement: true,
-      },
-      hot: false,
-    }),
-  ],
+  plugins: [svelte()],
 })

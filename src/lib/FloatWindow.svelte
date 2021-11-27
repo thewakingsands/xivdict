@@ -1,5 +1,3 @@
-<svelte:options tag={null} />
-
 <script lang="ts">
   import type { SearchMatches } from './search/search.types'
 
@@ -53,32 +51,11 @@
 </div>
 
 <style module lang="scss">
-  :host {
-    all: initial;
-    @apply fixed;
-    z-index: 2147483647;
-    user-select: none;
-    font-size: 14px;
-  }
-  :root {
-    font-size: 14px;
-  }
-  button,
-  a {
-    @apply no-underline text-blue-500;
-    &:hover {
-      @apply text-blue-700;
-    }
-  }
-  button {
-    @apply border-none cursor-pointer p-0 m-0;
-    user-select: none;
-    background: transparent;
-  }
   .hidden {
     display: none !important;
   }
   .Window {
+    all: initial;
     user-select: inherit;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
       'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
@@ -94,6 +71,23 @@
     @apply bg-gray-100;
 
     width: 340px;
+
+    :global(button),
+    :global(a) {
+      @apply no-underline text-blue-500;
+      &:hover {
+        @apply text-blue-700;
+      }
+    }
+    :global(button) {
+      @apply border-none cursor-pointer p-0 m-0;
+      user-select: none;
+      background: transparent;
+    }
+    :global(.WordRef) {
+      display: inline-block;
+      padding-right: 1em;
+    }
 
     &_Main {
       @apply flex flex-col;
@@ -155,10 +149,6 @@
     }
     &_About {
       @apply flex-1;
-    }
-    :global(.WordRef) {
-      display: inline-block;
-      padding-right: 1em;
     }
   }
 </style>

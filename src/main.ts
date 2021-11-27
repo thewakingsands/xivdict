@@ -22,15 +22,22 @@ async function start() {
   const searcher = new Searcher()
   await searcher.init(getDictUrl())
 
-  customElements.define('xd-float-window', FloatWindow as any)
-
   let isFocus = false
   let lastText = ''
 
-  const floatWindow = document.createElement('xd-float-window') as HTMLElement & {
-    words: SearchMatches
-  }
+  const floatWindow = document.createElement('div')
   floatWindow.tabIndex = 0
+  floatWindow.style.position = 'fixed'
+  floatWindow.style.zIndex = '2147483647'
+  floatWindow.style.userSelect = 'none'
+  floatWindow.style.fontSize = '14px'
+
+  const floatWindowApp = new FloatWindow({
+    target: floatWindow,
+    props: {
+      words: [],
+    },
+  })
 
   floatWindow.addEventListener('focus', () => {
     isFocus = true
@@ -60,7 +67,7 @@ async function start() {
       return
     }
     floatWindow.style.userSelect = 'none'
-    floatWindow.words = []
+    floatWindowApp.$set({ words: [] })
     const selection = PowerfulSelection.fromUserSelection()
     if (!selection.hasSelectedContent()) {
       lastText = ''
@@ -74,7 +81,7 @@ async function start() {
         .matches(currentText)
         .then((words) => {
           if (currentText === lastText) {
-            floatWindow.words = words
+            floatWindowApp.$set({ words })
           }
 
           let rect = floatWindow.getBoundingClientRect()
