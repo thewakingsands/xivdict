@@ -41,7 +41,7 @@
     <div class="Window_Footer">
       <div class="Window_Functions">
         <button class="hidden">赞</button>
-        <button class="hidden">反馈</button>
+        <a href="https://i.duotai.net/forms/k06nm/bhytfsr6" rel="noopener" target="_blank">反馈</a>
         <button class="hidden">不再显示</button>
       </div>
       <div class="Window_About">
