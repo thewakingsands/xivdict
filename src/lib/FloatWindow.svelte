@@ -1,3 +1,5 @@
+<svelte:options accessors />
+
 <script lang="ts">
   import type { SearchMatches } from './search/search.types'
 
@@ -12,7 +14,7 @@
   }
 </script>
 
-<div class="Window" class:hidden={words.length < 1}>
+<div class="Window Window-RowStyle" class:hidden={words.length < 1}>
   <div class="Window_Main">
     <ul class="Window_WordList">
       {#each words as word}
@@ -71,6 +73,9 @@
     @apply bg-gray-100;
 
     width: 340px;
+    max-height: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
 
     :global(button),
     :global(a) {
@@ -99,14 +104,14 @@
       }
     }
     &_WordItem {
-      @apply flex;
+      @apply flex py-1;
       &:nth-of-type(even) {
         @apply bg-gray-200;
       }
     }
     &_WordKey,
     &_WordDefinition {
-      @apply m-1;
+      @apply mx-1;
     }
     &_WordKey {
       flex: 1;
@@ -127,6 +132,17 @@
       :global(ol li::before) {
         counter-increment: listconter;
         content: counter(listconter) '. ';
+      }
+    }
+    &-RowStyle {
+      .Window_WordItem {
+        @apply flex-col;
+      }
+      .Window_WordKey {
+        @apply font-bold;
+      }
+      .Window_WordDefinition {
+        @apply mt-1;
       }
     }
     &_SpoilerWarning {

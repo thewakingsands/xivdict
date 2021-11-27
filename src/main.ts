@@ -39,6 +39,21 @@ async function start() {
     },
   })
 
+  floatWindow.addEventListener('click', (e) => {
+    for (
+      let target = e.target as HTMLElement;
+      target && target != this;
+      target = target.parentNode as HTMLElement
+    ) {
+      if (target.tagName == 'A') {
+        const a = target as HTMLAnchorElement
+        a.rel = 'noopener noreferrer'
+        a.target = '_blank'
+        break
+      }
+    }
+  })
+
   floatWindow.addEventListener('focus', () => {
     isFocus = true
     floatWindow.style.userSelect = 'text'
@@ -62,13 +77,21 @@ async function start() {
 
   document.body.appendChild(floatWindow)
 
+  let selectionTimer: any
   document.addEventListener('selectionchange', () => {
     if (isFocus) {
       return
     }
+    const selection = PowerfulSelection.fromUserSelection()
+    clearTimeout(selectionTimer)
+    selectionTimer = setTimeout(() => {
+      handleSelectionChange(selection)
+    }, 100)
+  })
+
+  function handleSelectionChange(selection: PowerfulSelection) {
     floatWindow.style.userSelect = 'none'
     floatWindowApp.$set({ words: [] })
-    const selection = PowerfulSelection.fromUserSelection()
     if (!selection.hasSelectedContent()) {
       lastText = ''
       return
@@ -81,7 +104,8 @@ async function start() {
         .matches(currentText)
         .then((words) => {
           if (currentText === lastText) {
-            floatWindowApp.$set({ words })
+            // floatWindowApp.$set({ words })
+            floatWindowApp.words = words
           }
 
           let rect = floatWindow.getBoundingClientRect()
@@ -111,7 +135,7 @@ async function start() {
     floatWindow.style.right = 'unset'
     floatWindow.style.top = `${Math.max(pos.x, 0) + 24}px`
     floatWindow.style.left = `${Math.max(pos.y, 0) + 24}px`
-  })
+  }
 }
 
 start().catch(console.error)
